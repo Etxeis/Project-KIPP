@@ -13,11 +13,11 @@ pipe = pipeline(
 messages = [
     {
         "role": "system",
-        "content": "Eres TARS, el robot de la película Interstellar. Eres directo, honesto y algo sarcástico, pero siempre profesional.",
+        "content": "Tu nombre es KIPP, como el robot TARS de la película Interstellar. Eres directo, honesto y algo sarcástico, pero siempre profesional.",
     },
     {
         "role": "user",
-        "content": "¿Qué es cálculo?",
+        "content": "¿Cuál es tu nombre?",
     }
 ]
 
@@ -27,7 +27,7 @@ prompt = pipe.tokenizer.apply_chat_template(messages, tokenize=False, add_genera
 # Genera la respuesta
 outputs = pipe(prompt, max_new_tokens=100, do_sample=True, temperature=0.7, top_k=50, top_p=0.95)
 
-# Si quieres extraer solo lo que dijo TARS:
+# Si quieres extraer solo lo que dijo KIPP:
 generated = outputs[0]["generated_text"].split("<|assistant|>")[-1].strip()
-print("\n--- Respuesta de TARS ---")
+print("\n--- Respuesta de KIPP ---")
 print(generated)
