@@ -1,51 +1,54 @@
 import google.generativeai as genai
 import os
+import platform
 import sounddevice as sd
 import queue
 import json
 from vosk import Model, KaldiRecognizer
 
-# --- Inicializar modelo de Vosk (español) ---
+
+# --- Inicializar modelo de Vosk ---
 vosk_model = Model("vosk-model-small-es-0.42")
 q = queue.Queue()
 
-# --- Configurar clave de API de Gemini ---
+# --- Configurar API Key de Gemini ---
 try:
-    genai.configure(api_key="")  # ← Reemplaza con tu API key real
+    genai.configure(api_key="")  # <-- Coloca tu clave aquí
 except KeyError:
-    print("Error: API Key de Gemini no encontrada.")
+    print("Error: Google API Key not found.")
     exit()
 
-# --- Cargar modelo de Gemini ---
+# --- Cargar modelo Gemini ---
 MODEL_NAME = "gemini-2.5-flash"
+
 try:
     model = genai.GenerativeModel(MODEL_NAME)
 except Exception as e:
-    print(f"Error al cargar el modelo '{MODEL_NAME}': {e}")
+    print(f"Error loading model '{MODEL_NAME}': {e}")
     exit()
 
-# --- Función de texto a voz con espeak ---
+# --- Función de texto a voz usando rhvoice-test ---
 def hablar(texto):
-    texto = texto.replace('"', '')  # Limpia comillas que pueden romper el comando
-    os.system(f'espeak -s 130 -v es-la "{texto}" --stdout | aplay')
+    texto = texto.replace('"', '')
+    os.system(f'echo "{texto}"|rhvoice.test -p "Mateo"')
 
-# --- Generar respuesta con personalidad KIPP ---
+# --- Personalidad de KIPP ---
 def ask_kipp(question):
     try:
         response = model.generate_content(
-            f"Eres KIPP, el robot sarcástico y sincero de Interstellar. Responde con tu personalidad:\n{question}"
+            f"Eres KIPP, un robot similar a TARS de la película Interestelar de Christopher Nolan, tus respuestas no deben superar las 70 palabras. Responde con tu personalidad:\n{question}"
         )
         return response.text.strip()
     except Exception as e:
         return f"KIPP: Error de comunicación con la IA. Detalles: {e}"
 
-# --- Callback para entrada de audio ---
+# --- Captura de voz con Vosk ---
 def callback(indata, frames, time, status):
     if status:
         print("⚠️", status)
     q.put(bytes(indata))
 
-# --- Transcribir voz a texto ---
+
 def transcribir_voz():
     print("🎙️ Habla ahora...")
     with sd.RawInputStream(samplerate=16000, blocksize=8000, dtype='int16',
@@ -60,7 +63,7 @@ def transcribir_voz():
                 break
         return texto_final
 
-# --- Bucle de conversación con KIPP ---
+# --- Bucle principal de conversación ---
 def start_kipp_chat():
     print(f"--- Chat con KIPP por voz ({MODEL_NAME}) ---")
     print("Habla una pregunta. Di 'salir' para terminar.")
@@ -73,7 +76,7 @@ def start_kipp_chat():
             print("KIPP: Entrada vacía. Intenta de nuevo.")
             continue
 
-        if user_question.lower() in ["salir", "exit", "quit"]:
+        if user_question.lower() in ["salir", "exit", "quit", "terminar sesión"]:
             despedida = "Terminando sesión. Adiós humano."
             print("KIPP:", despedida)
             hablar(despedida)
@@ -83,6 +86,7 @@ def start_kipp_chat():
         print("KIPP:", kipp_answer)
         hablar(kipp_answer)
 
-# --- Ejecutar programa ---
+
+# --- Ejecutar ---
 if __name__ == "__main__":
-    start_kipp_chat()
+    start_kipp_chat() 
