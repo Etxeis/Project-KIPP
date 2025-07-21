@@ -10,6 +10,7 @@ from vosk import Model, KaldiRecognizer
 # --- Inicializar modelo de Vosk ---
 vosk_model = Model("vosk-model-small-es-0.42")
 q = queue.Queue()
+print(sd.query_devices())
 
 # --- Configurar API Key de Gemini ---
 try:
@@ -51,9 +52,9 @@ def callback(indata, frames, time, status):
 
 def transcribir_voz():
     print("🎙️ Habla ahora...")
-    with sd.RawInputStream(samplerate=16000, blocksize=8000, dtype='int16',
+    with sd.RawInputStream(samplerate=48000, blocksize=8000, dtype='int16',
                            channels=1, callback=callback):
-        recognizer = KaldiRecognizer(vosk_model, 16000)
+        recognizer = KaldiRecognizer(vosk_model, 48000)
         texto_final = ""
         while True:
             data = q.get()
