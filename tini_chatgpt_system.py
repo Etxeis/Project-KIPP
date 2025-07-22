@@ -4,6 +4,8 @@ import platform
 import sounddevice as sd
 import queue
 import json
+import random
+import subprocess
 from vosk import Model, KaldiRecognizer
 
 
@@ -20,7 +22,7 @@ except KeyError:
     exit()
 
 # --- Cargar modelo Gemini ---
-MODEL_NAME = "gemini-2.5-flash"
+MODEL_NAME = "gemini-1.5-flash"
 
 try:
     model = genai.GenerativeModel(MODEL_NAME)
@@ -31,13 +33,13 @@ except Exception as e:
 # --- Función de texto a voz usando rhvoice-test ---
 def hablar(texto):
     texto = texto.replace('"', '')
-    os.system(f'echo "{texto}"|rhvoice.test -p "Mateo"')
+    os.system(f'echo "{texto}"|RHVoice-test -p "Mateo"')
 
 # --- Personalidad de KIPP ---
 def ask_kipp(question):
     try:
         response = model.generate_content(
-            f"Eres KIPP, un robot similar a TARS de la película Interestelar de Christopher Nolan, tus respuestas no deben superar las 70 palabras. Responde con tu personalidad:\n{question}"
+            f"Eres kip, un robot similar a GPTARS de las redes sociales, tus respuestas deben ir desde las 5 palabras hasta no superar las 60 palabras y cuando proceses la palabra equipo realmente la debes interpretar como tu nombre kip, por otro lado cuando quieras decir porciento, debes responder porciento no escribir el signo. Responde con tu personalidad:\n{question}"
         )
         return response.text.strip()
     except Exception as e:
@@ -68,6 +70,7 @@ def transcribir_voz():
 def start_kipp_chat():
     print(f"--- Chat con KIPP por voz ({MODEL_NAME}) ---")
     print("Habla una pregunta. Di 'salir' para terminar.")
+    counter = 0
 
     while True:
         user_question = transcribir_voz()
@@ -75,6 +78,23 @@ def start_kipp_chat():
 
         if not user_question.strip():
             print("KIPP: Entrada vacía. Intenta de nuevo.")
+            counter += 1
+            if counter == 5:
+                temita = str(random.randint(1, 3))
+                subprocess.run(['ffplay', '-v', '0', '-nodisp', '-autoexit', temita+'.mp3'], check=True)
+                counter = 0
+            continue
+
+        if user_question.lower() in ["hola kip", "hola equipo", "hola"]:
+            despedida = "Hola! Soy kip, listo para funcionar."
+            print("KIPP:", despedida)
+            hablar(despedida)
+            continue
+
+        if user_question.lower() in ["oye equipo", "kip", "equipo", "oye kip", "oye"]:
+            despedida = "Dime."
+            print("KIPP:", despedida)
+            hablar(despedida)
             continue
 
         if user_question.lower() in ["salir", "exit", "quit", "terminar sesión"]:

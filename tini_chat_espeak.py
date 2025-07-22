@@ -19,7 +19,7 @@ try:
     # --- COLOCA TU CLAVE API DE GEMINI AQUÍ ---
     # Es ALTAMENTE recomendable no incrustar la API key directamente en el código.
     # Considera usar una variable de entorno: os.environ.get("GEMINI_API_KEY")
-    genai.configure(api_key="")
+        genai.configure(api_key="")
 except KeyError:
     print("Error: Google API Key not found. Asegúrate de que esté configurada.")
     exit()
