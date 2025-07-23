@@ -7,9 +7,9 @@ Uso de VOSK para el reconocimiento y transcripción de voz.
 Uso de la API de Gemini para generar respuestas.
 - [x] Sintesis de Voz:
 Uso de RHVoice para generación de voz a partir de texto en modo de respuesta.
-- [ ] Incorporación de Display:
-- [ ] Incorporación de Micrófono:
-- [ ] Incorporación de Mini-Altavoz:
+- [ ] Incorporación de Display.
+- [ ] Incorporación de Micrófono.
+- [ ] Incorporación de Mini-Altavoz.
 
 ### Movimiento Físico (-)
 - [ ] Diseño de cuerpo de KIPP. 
