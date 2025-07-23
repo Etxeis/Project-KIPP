@@ -9,11 +9,11 @@ Uso de la API de Gemini para generar respuestas.
 Uso de RHVoice para generación de voz a partir de texto en modo de respuesta.
 
 ### Movimiento Físico (-)
-- [  ] Diseño de cuerpo de KIPP. 
-- [  ] Integración de SERVOs para los brazos.
+- [ ] Diseño de cuerpo de KIPP. 
+- [ ] Integración de SERVOs para los brazos.
 
 ### Programación de Microcontroladores (-)
-- [  ] Programación de movimiento de los brazos.
+- [ ] Programación de movimiento de los brazos.
 
 ### Integración Arduino y Raspberry Pi (-)
-- [  ] Indicaciones mecánicas a través de comandos por voz.
+- [ ] Indicaciones mecánicas a través de comandos por voz.
