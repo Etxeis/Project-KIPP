@@ -16,7 +16,7 @@ print(sd.query_devices())
 
 # --- Configurar API Key de Gemini ---
 try:
-    genai.configure(api_key="")  # <-- Coloca tu clave aquí
+    genai.configure(api_key="***REMOVED***")  # <-- Coloca tu clave aquí
 except KeyError:
     print("Error: Google API Key not found.")
     exit()
@@ -89,6 +89,14 @@ def start_kipp_chat():
             despedida = "Hola! Soy kip, listo para funcionar."
             print("KIPP:", despedida)
             hablar(despedida)
+            continue
+
+        if user_question.lower() in ["vende verduras", "vende verdura"]:
+            subprocess.run(['ffplay', '-v', '0', '-nodisp', '-autoexit', '2.mp3'], check=True)
+            continue
+
+        if user_question.lower() in ["tírate una frase icónica", "tírate un clásico"]:
+            subprocess.run(['ffplay', '-v', '0', '-nodisp', '-autoexit', '1.mp3'], check=True)
             continue
 
         if user_question.lower() in ["oye equipo", "kip", "equipo", "oye kip", "oye"]:
