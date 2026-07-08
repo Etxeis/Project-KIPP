@@ -2,3 +2,4 @@ Project-KIPP/
 piper/
 orca_models/
 bin/
+.venv/
