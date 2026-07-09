@@ -3,3 +3,4 @@ piper/
 orca_models/
 bin/
 .venv/
+pyvenv.cfg
