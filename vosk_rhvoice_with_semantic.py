@@ -190,7 +190,7 @@ def _texto_sugiere_continuacion(texto):
 
 
 def transcribir_voz():
-    print("🎙️ Habla ahora...")
+    print("Habla ahora...")
     silence_ms = 0
     speech_ms = 0
     started_speaking = False
